@@ -29,6 +29,8 @@ public sealed partial class UniversityContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasPostgresExtension("uuid-ossp");
+        
         // Налаштування Student
         modelBuilder.Entity<Student>(entity =>
         {
@@ -38,6 +40,7 @@ public sealed partial class UniversityContext : DbContext
             entity.Property(s => s.first_name).HasColumnName("first_name").IsRequired().HasMaxLength(100);
             entity.Property(s => s.last_name).HasColumnName("last_name").IsRequired().HasMaxLength(100);
             entity.Property(s => s.email).HasColumnName("email").IsRequired().HasMaxLength(200);
+            entity.Property(s => s.phone_number).HasColumnName("phone_number").IsRequired().HasMaxLength(15);
         });
 
         // Налаштування Course
@@ -117,5 +120,12 @@ public sealed partial class UniversityContext : DbContext
 
             entity.HasOne(qr => qr.course).WithMany().HasForeignKey(qr => qr.course_id);
         });
+    }
+    
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder
+            .Properties<Guid>()
+            .HaveConversion<IdConverter>();
     }
 }
