@@ -20,16 +20,14 @@ namespace EntityFramework.Migrations
                 .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "uuid-ossp");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("EntityFramework.Migrations.AcademicYearPlan", b =>
                 {
-                    b.Property<int>("year_plan_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                    b.Property<Guid>("year_plan_id")
+                        .HasColumnType("uuid")
                         .HasColumnName("year_plan_id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("year_plan_id"));
 
                     b.Property<int>("academic_year")
                         .HasColumnType("integer")
@@ -42,15 +40,9 @@ namespace EntityFramework.Migrations
 
             modelBuilder.Entity("EntityFramework.Migrations.Course", b =>
                 {
-                    b.Property<int>("course_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                    b.Property<Guid>("course_id")
+                        .HasColumnType("uuid")
                         .HasColumnName("course_id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("course_id"));
-
-                    b.Property<int?>("AcademicYearPlanyear_plan_id")
-                        .HasColumnType("integer");
 
                     b.Property<string>("description")
                         .IsRequired()
@@ -66,30 +58,25 @@ namespace EntityFramework.Migrations
 
                     b.HasKey("course_id");
 
-                    b.HasIndex("AcademicYearPlanyear_plan_id");
-
                     b.ToTable("courses", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Migrations.Enrollment", b =>
                 {
-                    b.Property<int>("enrollment_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                    b.Property<Guid>("enrollment_id")
+                        .HasColumnType("uuid")
                         .HasColumnName("enrollment_id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("enrollment_id"));
-
-                    b.Property<int>("course_id")
-                        .HasColumnType("integer")
+                    b.Property<Guid>("course_id")
+                        .HasColumnType("uuid")
                         .HasColumnName("course_id");
 
-                    b.Property<int>("group_id")
-                        .HasColumnType("integer")
+                    b.Property<Guid>("group_id")
+                        .HasColumnType("uuid")
                         .HasColumnName("group_id");
 
-                    b.Property<int>("student_id")
-                        .HasColumnType("integer")
+                    b.Property<Guid>("student_id")
+                        .HasColumnType("uuid")
                         .HasColumnName("student_id");
 
                     b.HasKey("enrollment_id");
@@ -105,12 +92,9 @@ namespace EntityFramework.Migrations
 
             modelBuilder.Entity("EntityFramework.Migrations.Group", b =>
                 {
-                    b.Property<int>("group_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                    b.Property<Guid>("group_id")
+                        .HasColumnType("uuid")
                         .HasColumnName("group_id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("group_id"));
 
                     b.Property<string>("name")
                         .IsRequired()
@@ -125,20 +109,17 @@ namespace EntityFramework.Migrations
 
             modelBuilder.Entity("EntityFramework.Migrations.QRSession", b =>
                 {
-                    b.Property<int>("qr_session_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                    b.Property<Guid>("qr_session_id")
+                        .HasColumnType("uuid")
                         .HasColumnName("qr_session_id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("qr_session_id"));
-
-                    b.Property<int>("course_id")
-                        .HasColumnType("integer")
+                    b.Property<Guid>("course_id")
+                        .HasColumnType("uuid")
                         .HasColumnName("course_id");
 
-                    b.Property<DateTime>("expiration_time")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("expiration_time");
+                    b.Property<DateOnly>("expiration_date")
+                        .HasColumnType("date")
+                        .HasColumnName("expiration_date");
 
                     b.Property<string>("qr_code")
                         .IsRequired()
@@ -154,12 +135,9 @@ namespace EntityFramework.Migrations
 
             modelBuilder.Entity("EntityFramework.Migrations.Specialty", b =>
                 {
-                    b.Property<int>("specialty_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                    b.Property<Guid>("specialty_id")
+                        .HasColumnType("uuid")
                         .HasColumnName("specialty_id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("specialty_id"));
 
                     b.Property<string>("name")
                         .IsRequired()
@@ -174,19 +152,16 @@ namespace EntityFramework.Migrations
 
             modelBuilder.Entity("EntityFramework.Migrations.SpecialtyCourse", b =>
                 {
-                    b.Property<int>("specialty_course_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                    b.Property<Guid>("specialty_course_id")
+                        .HasColumnType("uuid")
                         .HasColumnName("specialty_course_id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("specialty_course_id"));
-
-                    b.Property<int>("course_id")
-                        .HasColumnType("integer")
+                    b.Property<Guid>("course_id")
+                        .HasColumnType("uuid")
                         .HasColumnName("course_id");
 
-                    b.Property<int>("specialty_id")
-                        .HasColumnType("integer")
+                    b.Property<Guid>("specialty_id")
+                        .HasColumnType("uuid")
                         .HasColumnName("specialty_id");
 
                     b.HasKey("specialty_course_id");
@@ -200,12 +175,13 @@ namespace EntityFramework.Migrations
 
             modelBuilder.Entity("EntityFramework.Migrations.Student", b =>
                 {
-                    b.Property<int>("student_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                    b.Property<Guid>("student_id")
+                        .HasColumnType("uuid")
                         .HasColumnName("student_id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("student_id"));
+                    b.Property<DateOnly>("birth_date")
+                        .HasColumnType("date")
+                        .HasColumnName("birth_date");
 
                     b.Property<string>("email")
                         .IsRequired()
@@ -219,8 +195,9 @@ namespace EntityFramework.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("first_name");
 
-                    b.Property<int?>("group_id")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("group_id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("group_id");
 
                     b.Property<string>("last_name")
                         .IsRequired()
@@ -239,13 +216,6 @@ namespace EntityFramework.Migrations
                     b.HasIndex("group_id");
 
                     b.ToTable("students", (string)null);
-                });
-
-            modelBuilder.Entity("EntityFramework.Migrations.Course", b =>
-                {
-                    b.HasOne("EntityFramework.Migrations.AcademicYearPlan", null)
-                        .WithMany("courses")
-                        .HasForeignKey("AcademicYearPlanyear_plan_id");
                 });
 
             modelBuilder.Entity("EntityFramework.Migrations.Enrollment", b =>
@@ -307,14 +277,13 @@ namespace EntityFramework.Migrations
 
             modelBuilder.Entity("EntityFramework.Migrations.Student", b =>
                 {
-                    b.HasOne("EntityFramework.Migrations.Group", null)
+                    b.HasOne("EntityFramework.Migrations.Group", "group")
                         .WithMany("students")
-                        .HasForeignKey("group_id");
-                });
+                        .HasForeignKey("group_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("EntityFramework.Migrations.AcademicYearPlan", b =>
-                {
-                    b.Navigation("courses");
+                    b.Navigation("group");
                 });
 
             modelBuilder.Entity("EntityFramework.Migrations.Course", b =>

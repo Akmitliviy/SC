@@ -36,11 +36,15 @@ public sealed partial class UniversityContext : DbContext
         {
             entity.ToTable("students");
             entity.HasKey(s => s.student_id);
-            entity.Property(s => s.student_id).HasColumnName("student_id");
+            entity.Property(s => s.student_id).HasColumnName("student_id").ValueGeneratedNever();
             entity.Property(s => s.first_name).HasColumnName("first_name").IsRequired().HasMaxLength(100);
             entity.Property(s => s.last_name).HasColumnName("last_name").IsRequired().HasMaxLength(100);
+            entity.Property(s => s.birth_date).HasColumnName("birth_date").IsRequired();
             entity.Property(s => s.email).HasColumnName("email").IsRequired().HasMaxLength(200);
             entity.Property(s => s.phone_number).HasColumnName("phone_number").IsRequired().HasMaxLength(15);
+            entity.Property(s => s.group_id).HasColumnName("group_id").IsRequired();
+            
+            entity.HasOne(s => s.group).WithMany(g => g.students).HasForeignKey(s => s.group_id);
         });
 
         // Налаштування Course
@@ -48,7 +52,7 @@ public sealed partial class UniversityContext : DbContext
         {
             entity.ToTable("courses");
             entity.HasKey(c => c.course_id);
-            entity.Property(c => c.course_id).HasColumnName("course_id");
+            entity.Property(c => c.course_id).HasColumnName("course_id").ValueGeneratedNever();
             entity.Property(c => c.name).HasColumnName("name").IsRequired().HasMaxLength(200);
             entity.Property(c => c.description).HasColumnName("description").HasMaxLength(500);
         });
@@ -58,7 +62,7 @@ public sealed partial class UniversityContext : DbContext
         {
             entity.ToTable("groups");
             entity.HasKey(g => g.group_id);
-            entity.Property(g => g.group_id).HasColumnName("group_id");
+            entity.Property(g => g.group_id).HasColumnName("group_id").ValueGeneratedNever();
             entity.Property(g => g.name).HasColumnName("name").IsRequired().HasMaxLength(100);
         });
 
@@ -67,7 +71,7 @@ public sealed partial class UniversityContext : DbContext
         {
             entity.ToTable("specialties");
             entity.HasKey(sp => sp.specialty_id);
-            entity.Property(sp => sp.specialty_id).HasColumnName("specialty_id");
+            entity.Property(sp => sp.specialty_id).HasColumnName("specialty_id").ValueGeneratedNever();
             entity.Property(sp => sp.name).HasColumnName("name").IsRequired().HasMaxLength(200);
         });
 
@@ -76,7 +80,7 @@ public sealed partial class UniversityContext : DbContext
         {
             entity.ToTable("enrollments");
             entity.HasKey(e => e.enrollment_id);
-            entity.Property(e => e.enrollment_id).HasColumnName("enrollment_id");
+            entity.Property(e => e.enrollment_id).HasColumnName("enrollment_id").ValueGeneratedNever();
             entity.Property(e => e.student_id).HasColumnName("student_id");
             entity.Property(e => e.course_id).HasColumnName("course_id");
             entity.Property(e => e.group_id).HasColumnName("group_id");
@@ -91,7 +95,7 @@ public sealed partial class UniversityContext : DbContext
         {
             entity.ToTable("specialty_courses");
             entity.HasKey(sc => sc.specialty_course_id);
-            entity.Property(sc => sc.specialty_course_id).HasColumnName("specialty_course_id");
+            entity.Property(sc => sc.specialty_course_id).HasColumnName("specialty_course_id").ValueGeneratedNever();
             entity.Property(sc => sc.specialty_id).HasColumnName("specialty_id");
             entity.Property(sc => sc.course_id).HasColumnName("course_id");
 
@@ -104,7 +108,7 @@ public sealed partial class UniversityContext : DbContext
         {
             entity.ToTable("academic_year_plans");
             entity.HasKey(ayp => ayp.year_plan_id);
-            entity.Property(ayp => ayp.year_plan_id).HasColumnName("year_plan_id");
+            entity.Property(ayp => ayp.year_plan_id).HasColumnName("year_plan_id").ValueGeneratedNever();
             entity.Property(ayp => ayp.academic_year).HasColumnName("academic_year").IsRequired();
         });
 
@@ -113,19 +117,12 @@ public sealed partial class UniversityContext : DbContext
         {
             entity.ToTable("qr_sessions");
             entity.HasKey(qr => qr.qr_session_id);
-            entity.Property(qr => qr.qr_session_id).HasColumnName("qr_session_id");
+            entity.Property(qr => qr.qr_session_id).HasColumnName("qr_session_id").ValueGeneratedNever();
             entity.Property(qr => qr.qr_code).HasColumnName("qr_code").IsRequired();
-            entity.Property(qr => qr.expiration_time).HasColumnName("expiration_time").IsRequired();
+            entity.Property(qr => qr.expiration_date).HasColumnName("expiration_date").IsRequired();
             entity.Property(qr => qr.course_id).HasColumnName("course_id");
 
             entity.HasOne(qr => qr.course).WithMany().HasForeignKey(qr => qr.course_id);
         });
-    }
-    
-    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
-    {
-        configurationBuilder
-            .Properties<Guid>()
-            .HaveConversion<IdConverter>();
     }
 }

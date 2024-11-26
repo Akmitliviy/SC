@@ -2,7 +2,7 @@
 
 public class Group
 {
-    public int group_id { get; set; }
+    public Guid group_id { get; set; }
     public string name { get; set; }
 
     public ICollection<Enrollment> enrollments { get; set; }
