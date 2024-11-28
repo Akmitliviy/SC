@@ -1,0 +1,11 @@
+<h1>Редагувати {{ entityType }}</h1>
+
+<form (ngSubmit)="onSubmit()" #updateForm="ngForm">
+    <div *ngFor="let property of properties" class="mb-3">
+        <label class="form-label">{{ property.label }}</label>
+        <input name="{{ property.key }}" class="form-control" [(ngModel)]="property.value" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+    <a routerLink="/home" class="btn btn-secondary">Назад до списку</a>
+</form>

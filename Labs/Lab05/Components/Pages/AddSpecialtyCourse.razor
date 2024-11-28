@@ -1,0 +1,33 @@
+@page "/add-specialtycourse"
+
+<PageTitle>Add specialty_course</PageTitle>
+    <RadzenColumn SizeMD=12>
+        <RadzenAlert Shade="Shade.Lighter" Variant="Variant.Flat" Size="AlertSize.Small" AlertStyle="AlertStyle.Danger" Visible="@errorVisible">Cannot save specialty_course</RadzenAlert>
+        <RadzenTemplateForm TItem="Lab05SC.Models.University.specialty_course" Data="@specialtyCourse" Visible="@(specialtyCourse != null)" Submit="@FormSubmit">
+            <RadzenRow style="margin-bottom: 1rem">
+                <RadzenColumn SizeMD="3">
+                    <RadzenLabel Text="specialty" Component="specialty" style="width: 100%" />
+                </RadzenColumn>
+                <RadzenColumn SizeMD="9">
+                    <RadzenDropDownDataGrid Data="@specialtiesForspecialtyId" TextProperty="name" ValueProperty="specialty_id" AllowClear=true
+                         Placeholder="Choose specialty" style="display: block; width: 100%" @bind-Value="@specialtyCourse.specialty_id" Name="specialty_id"
+                           />
+                </RadzenColumn>
+            </RadzenRow>
+            <RadzenRow style="margin-bottom: 1rem">
+                <RadzenColumn SizeMD="3">
+                    <RadzenLabel Text="course" Component="course" style="width: 100%" />
+                </RadzenColumn>
+                <RadzenColumn SizeMD="9">
+                    <RadzenDropDownDataGrid Data="@coursesForcourseId" TextProperty="name" ValueProperty="course_id" AllowClear=true
+                         Placeholder="Choose course" style="display: block; width: 100%" @bind-Value="@specialtyCourse.course_id" Name="course_id"
+                           />
+                </RadzenColumn>
+            </RadzenRow>
+          <RadzenStack  Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+                    <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="Save" Variant="Variant.Flat" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Cancel" Variant="Variant.Flat" Click="@CancelButtonClick"  />
+          </RadzenStack>
+        </RadzenTemplateForm>
+    </RadzenColumn>
+

@@ -1,0 +1,127 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <div class="d-inline-flex align-items-center mt-3">
+        <!-- Випадаючий список для вибору сутності -->
+        <select id="entityType" class="form-select m-2">
+            <option selected disabled>Виберіть сутність</option>
+            @foreach (var type in ViewBag.EntityTypes)
+            {
+                <option value="@type">@type</option>
+            }
+        </select>
+        <!-- Поле для введення ID -->
+        <input id="entityId" type="number" class="form-control m-2" placeholder="ID">
+        <button class="btn btn-success m-2" onclick="createEntity()">
+            Додати
+        </button>
+        <!-- Кнопка для редагування -->
+        <button class="btn btn-warning m-2" onclick="editEntity()">
+            Редагувати
+        </button>
+        <!-- Кнопка для видалення -->
+        <button class="btn btn-danger m-2" onclick="deleteEntity()">
+            Видалити
+        </button>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+
+<script type="text/javascript">
+    function editEntity() {
+        const typeSelect = document.getElementById("entityType");
+        const idInput = document.getElementById("entityId");
+
+        if (!typeSelect || !idInput) {
+            console.error("Не знайдено необхідні елементи форми");
+            return;
+        }
+
+        const type = typeSelect.value;
+        const id = idInput.value;
+
+        if (!type || type === "Виберіть сутність") {
+            alert("Будь ласка, оберіть сутність");
+            return;
+        }
+
+        if (!id) {
+            alert("Будь ласка, введіть ID");
+            return;
+        }
+
+        window.location.href = `/Update/Edit?type=${type}&id=${id}`;
+    }
+
+    function createEntity() {
+        const typeSelect = document.getElementById("entityType");
+
+        if (!typeSelect) {
+            console.error("Не знайдено елемент вибору сутності");
+            return;
+        }
+
+        const type = typeSelect.value;
+
+        if (!type || type === "Виберіть сутність") {
+            alert("Будь ласка, оберіть тип сутності для створення");
+            return;
+        }
+
+        window.location.href = `/Create/New?type=${type}`;
+    }
+
+    function deleteEntity() {
+        const typeSelect = document.getElementById("entityType");
+        const idInput = document.getElementById("entityId");
+
+        if (!typeSelect || !idInput) {
+            console.error("Не знайдено необхідні елементи форми");
+            return;
+        }
+
+        const type = typeSelect.value;
+        const id = idInput.value;
+
+        if (!type || type === "Виберіть сутність") {
+            alert("Будь ласка, оберіть сутність");
+            return;
+        }
+
+        if (!id) {
+            alert("Будь ласка, введіть ID");
+            return;
+        }
+
+        if (confirm("Ви впевнені, що хочете видалити цей запис?")) {
+            fetch(`/Delete/DeleteEntity?type=${type}&id=${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message || "Запис успішно видалено");
+                        location.reload();
+                    } else {
+                        alert(data.message || "Помилка при видаленні запису");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Помилка при видаленні запису. Перевірте консоль для деталей.");
+                });
+        }
+    }
+</script>

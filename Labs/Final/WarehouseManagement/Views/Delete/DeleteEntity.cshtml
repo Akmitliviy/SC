@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Delete Entity";
+}
+
+<h2>Delete @ViewBag.EntityType with ID @ViewBag.EntityId</h2>
+
+<p>Are you sure you want to delete this entity?</p>
+
+<form asp-action="DeleteEntity" method="post">
+    <input type="hidden" name="type" value="@ViewBag.EntityType" />
+    <input type="hidden" name="id" value="@ViewBag.EntityId" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Cancel</a>
+</form>

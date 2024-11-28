@@ -11,4 +11,3 @@ public class Enrollment
     public Course course { get; set; }
     public Group group { get; set; }
 }
-

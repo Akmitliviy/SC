@@ -1,0 +1,13 @@
+<h1>Створити нову {{ entityType }}</h1>
+
+<form (ngSubmit)="onSubmit()" #createForm="ngForm">
+    <input type="hidden" name="type" [(ngModel)]="entityType" />
+
+    <div *ngFor="let property of properties" class="mb-3">
+        <label class="form-label">{{ property.label }}</label>
+        <input name="{{ property.key }}" class="form-control" [(ngModel)]="property.value" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Створити</button>
+    <a routerLink="/home" class="btn btn-secondary">Назад до списку</a>
+</form>

@@ -1,0 +1,43 @@
+@page "/add-enrollment"
+
+<PageTitle>Add enrollment</PageTitle>
+    <RadzenColumn SizeMD=12>
+        <RadzenAlert Shade="Shade.Lighter" Variant="Variant.Flat" Size="AlertSize.Small" AlertStyle="AlertStyle.Danger" Visible="@errorVisible">Cannot save enrollment</RadzenAlert>
+        <RadzenTemplateForm TItem="Lab05SC.Models.University.enrollment" Data="@enrollment" Visible="@(enrollment != null)" Submit="@FormSubmit">
+            <RadzenRow style="margin-bottom: 1rem">
+                <RadzenColumn SizeMD="3">
+                    <RadzenLabel Text="student" Component="student" style="width: 100%" />
+                </RadzenColumn>
+                <RadzenColumn SizeMD="9">
+                    <RadzenDropDownDataGrid Data="@studentsForstudentId" TextProperty="first_name" ValueProperty="student_id" AllowClear=true
+                         Placeholder="Choose student" style="display: block; width: 100%" @bind-Value="@enrollment.student_id" Name="student_id"
+                           />
+                </RadzenColumn>
+            </RadzenRow>
+            <RadzenRow style="margin-bottom: 1rem">
+                <RadzenColumn SizeMD="3">
+                    <RadzenLabel Text="course" Component="course" style="width: 100%" />
+                </RadzenColumn>
+                <RadzenColumn SizeMD="9">
+                    <RadzenDropDownDataGrid Data="@coursesForcourseId" TextProperty="name" ValueProperty="course_id" AllowClear=true
+                         Placeholder="Choose course" style="display: block; width: 100%" @bind-Value="@enrollment.course_id" Name="course_id"
+                           />
+                </RadzenColumn>
+            </RadzenRow>
+            <RadzenRow style="margin-bottom: 1rem">
+                <RadzenColumn SizeMD="3">
+                    <RadzenLabel Text="group1" Component="group1" style="width: 100%" />
+                </RadzenColumn>
+                <RadzenColumn SizeMD="9">
+                    <RadzenDropDownDataGrid Data="@groupsForgroupId" TextProperty="name" ValueProperty="group_id" AllowClear=true
+                         Placeholder="Choose group1" style="display: block; width: 100%" @bind-Value="@enrollment.group_id" Name="group_id"
+                           />
+                </RadzenColumn>
+            </RadzenRow>
+          <RadzenStack  Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+                    <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="Save" Variant="Variant.Flat" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Cancel" Variant="Variant.Flat" Click="@CancelButtonClick"  />
+          </RadzenStack>
+        </RadzenTemplateForm>
+    </RadzenColumn>
+

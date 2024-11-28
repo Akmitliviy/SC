@@ -1,0 +1,13 @@
+<div class="text-center">
+  <h1 class="display-4">Welcome</h1>
+  <div class="d-inline-flex align-items-center mt-3">
+      <select id="entityType" class="form-select m-2">
+          <option selected disabled>Виберіть сутність</option>
+          <option *ngFor="let entityType of entityTypes" [value]="entityType">{{ entityType }}</option>
+      </select>
+      <input id="entityId" type="number" class="form-control m-2" placeholder="ID">
+      <button class="btn btn-success m-2" (click)="createEntity()">Додати</button>
+      <button class="btn btn-warning m-2" (click)="editEntity()">Редагувати</button>
+      <button class="btn btn-danger m-2" (click)="deleteEntity()">Видалити</button>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+﻿@model WarehouseManagement.Models.UpdateViewModel
+
+@{
+    ViewData["Title"] = "Редагувати сутність";
+}
+
+<h1>Редагувати @Model.EntityType</h1>
+
+<form asp-action="UpdateEntity" method="post">
+    <input type="hidden" name="type" value="@Model.EntityType" />
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    @foreach (var property in Model.Properties)
+    {
+        <div class="mb-3">
+            <label class="form-label">@property.Key</label>
+            <input name="@property.Key" class="form-control" value="@property.Value" />
+        </div>
+    }
+
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+    <a href="/Home" class="btn btn-secondary">Назад до списку</a>
+</form>
